@@ -1,5 +1,17 @@
 module.exports = {
-  modules: ['@nuxtjs/apollo'],
+  modules: [
+    '@nuxtjs/apollo',
+    [
+      'nuxt-sass-resources-loader',
+      [
+        'node_modules/bootstrap/scss/_functions.scss',
+        'node_modules/bootstrap/scss/_variables.scss',
+        'node_modules/bootstrap/scss/_mixins.scss',
+        '~/assets/css/_vars.scss'
+      ]
+    ]
+  ],
+  css: ['node_modules/bootstrap/scss/_reboot.scss', '~/assets/css/base.scss'],
   apollo: {
     clientConfigs: {
       default: '~/apollo/client-configs/default.js'
