@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>Post</h2>
+    <h3 class="title">Post</h3>
     <PostItem
       :post="issue"
     />
@@ -17,7 +17,6 @@ export default {
   },
   async asyncData({ app, env, params, payload }) {
     if (payload) return { post: payload }
-    console.log(params)
     try {
       const { data } = await app.apolloProvider.defaultClient.query({
         query: getIssue,
@@ -37,6 +36,8 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+.title {
+  text-align: center;
+}
 </style>

@@ -6,16 +6,23 @@
         id: post.number
       }
     }">{{post.title}}</nuxt-link></h2>
-    <div>
-      <vue-markdown
-        class="marked"
-        :source="post.body"
-        :anchorAttributes="{
-          target: '_blank',
-          rel: 'noopener'
-        }"
-        @rendered="rendered"
-      />
+
+    <div class="body">
+      <div ref="marked">
+        <vue-markdown
+          class="marked"
+          :source="previewBody"
+          :anchorAttributes="{
+            target: '_blank',
+            rel: 'noopener'
+          }"
+          @rendered="rendered"
+        />
+      </div>
+      <div>
+        <textarea v-model="editBody"/>
+        <button @click="updateBody">Update preview</button>
+      </div>
     </div>
   </article>
 </template>
@@ -31,9 +38,23 @@ export default {
   props: {
     post: { type: Object, required: true }
   },
+  data() {
+    return {
+      previewBody: '',
+      editBody: ''
+    }
+  },
+  created() {
+    this.previewBody = this.editBody = this.post.body
+  },
   methods: {
+    updateBody() {
+      this.previewBody = this.editBody
+    },
     rendered() {
-      console.log('rendered')
+      this.$nextTick(() => {
+        this.loadTwitter(this.$refs.marked)
+      })
     }
   }
 }
@@ -50,5 +71,16 @@ export default {
   background: $clr-w-d;
   margin: -1rem -1rem 1rem -1rem;
   padding: 0.5rem;
+}
+.body {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-gap: 1rem;
+
+  textarea {
+    display: block;
+    width: 100%;
+    height: 10rem;
+  }
 }
 </style>

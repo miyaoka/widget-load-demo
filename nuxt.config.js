@@ -1,4 +1,5 @@
 module.exports = {
+  plugins: ['~/plugins/twitter-widgets'],
   modules: [
     '@nuxtjs/apollo',
     [
@@ -26,6 +27,13 @@ module.exports = {
   ** Headers of the page
   */
   head: {
+    script: [
+      {
+        type: 'text/javascript',
+        src: '//platform.twitter.com/widgets.js',
+        async: true
+      }
+    ],
     title: 'widget-load-demo',
     meta: [
       { charset: 'utf-8' },

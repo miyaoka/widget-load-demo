@@ -1,6 +1,6 @@
 <template>
   <section>
-    <h2>List</h2>
+    <h3 class="title">List</h3>
     <PostItem
       v-for="post in nodes"
       :key="post.id"
@@ -43,6 +43,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.title {
+  text-align: center;
+}
 .post {
   margin-top: 1rem;
 }
