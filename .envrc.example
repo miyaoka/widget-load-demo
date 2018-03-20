@@ -1,0 +1,8 @@
+# Create your tokens at https://github.com/settings/tokens
+
+## Public token to fetch repository on production
+export GH_READONLY_TOKEN=
+
+## Target repository
+export GH_REPO_OWNER=
+export GH_REPO_NAME=
