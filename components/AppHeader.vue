@@ -4,9 +4,12 @@
   </header>
 </template>
 
-<script>
-</script>
-
-<style>
-
+<style lang="scss" scoped>
+header {
+  background: $clr-w-d;
+  padding: 2rem 1rem;
+  a {
+    color: $clr-b-l;
+  }
+}
 </style>

@@ -1,7 +1,9 @@
 <template>
   <div>
     <AppHeader/>
-    <nuxt/>
+    <div class="main">
+      <nuxt/>
+    </div>
   </div>
 </template>
 
@@ -15,6 +17,8 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+.main {
+  margin: 1rem;
+}
 </style>

@@ -5,6 +5,7 @@
       v-for="post in nodes"
       :key="post.id"
       :post="post"
+      class="post"
     />
   </section>
 </template>
@@ -41,6 +42,8 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+.post {
+  margin-top: 1rem;
+}
 </style>
