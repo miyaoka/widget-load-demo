@@ -1,6 +1,11 @@
 <template>
   <section>
     <h2>List</h2>
+    <PostItem
+      v-for="post in nodes"
+      :key="post.id"
+      :post="post"
+    />
   </section>
 </template>
 
@@ -13,7 +18,6 @@ export default {
     PostItem
   },
   async asyncData({ app, env }) {
-    console.log(env)
     try {
       const { data } = await app.apolloProvider.defaultClient.query({
         query: getIssues,
@@ -23,10 +27,7 @@ export default {
           fetchIssuePerPage: 5
         }
       })
-      console.log(data)
-
       const { totalCount, nodes, pageInfo, append } = data.repository.issues
-
       return {
         totalCount,
         nodes,
