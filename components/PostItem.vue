@@ -1,12 +1,18 @@
 <template>
   <article class="postItem">
-    <h2 class="title"><nuxt-link :to="{
-      name: 'posts-id',
-      params: {
-        id: post.number
-      }
-    }">{{post.title}}</nuxt-link></h2>
-
+    <header>
+      <h2 class="title"><nuxt-link :to="{
+        name: 'posts-id',
+        params: {
+          id: post.number
+        }
+      }">{{post.title}}</nuxt-link></h2>
+      <a
+        :href="post.url"
+        target="_blank"
+        rel="noopener"
+      >[issue]</a>
+    </header>
     <div class="body">
       <div ref="marked">
         <vue-markdown
@@ -67,7 +73,7 @@ export default {
   padding: 1rem;
   overflow: hidden;
 }
-.title {
+header {
   background: $clr-w-d;
   margin: -1rem -1rem 1rem -1rem;
   padding: 0.5rem;
