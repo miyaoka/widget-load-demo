@@ -1,4 +1,91 @@
+const { createApolloFetch } = require('apollo-fetch')
+
 module.exports = {
+  generate: {
+    async routes() {
+      const apolloFetch = createApolloFetch({
+        uri: 'https://api.github.com/graphql'
+      })
+
+      apolloFetch.use(({ request, options }, next) => {
+        if (!options.headers) {
+          options.headers = {} // Create the headers object if needed.
+        }
+        options.headers['authorization'] = `Bearer ${
+          process.env.GH_READONLY_TOKEN
+        }`
+        next()
+      })
+
+      try {
+        let totalNodes = []
+        let endCursor = null
+        let hasNextPage = false
+        do {
+          const { data } = await apolloFetch({
+            query: `query getIssues(
+            $repoOwner: String!
+            $repoName: String!
+            $fetchIssuePerPage: Int = 5
+            $endCursor: String
+          ) {
+            repository(owner: $repoOwner, name: $repoName) {
+              name
+              description
+              issues(
+                orderBy: { field: CREATED_AT, direction: DESC }
+                first: $fetchIssuePerPage
+                after: $endCursor
+              ) {
+                totalCount
+                pageInfo {
+                  endCursor
+                  hasNextPage
+                }
+                nodes {
+                  author {
+                    avatarUrl
+                    login
+                    resourcePath
+                    url
+                  }
+                  id
+                  number
+                  title
+                  body
+                  createdAt
+                  updatedAt
+                  url
+                }
+              }
+            }
+          }
+          `,
+            variables: {
+              repoOwner: process.env.GH_REPO_OWNER,
+              repoName: process.env.GH_REPO_NAME,
+              fetchIssuePerPage: 100,
+              endCursor: endCursor
+            }
+          })
+
+          const { totalCount, nodes, pageInfo, append } = data.repository.issues
+          endCursor = pageInfo.endCursor
+          hasNextPage = pageInfo.hasNextPage
+
+          totalNodes = [...totalNodes, ...nodes]
+          console.log(totalNodes.length, pageInfo.endCursor)
+        } while (hasNextPage)
+
+        return totalNodes.map((node) => ({
+          route: `posts/${node.number}`,
+          payload: node
+        }))
+      } catch (err) {
+        console.error(err)
+      }
+    }
+  },
   plugins: ['~/plugins/twitter-widgets'],
   modules: [
     '@nuxtjs/apollo',

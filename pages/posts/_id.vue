@@ -16,7 +16,8 @@ export default {
     PostItem
   },
   async asyncData({ app, env, params, payload }) {
-    if (payload) return { post: payload }
+    if (payload) return { issue: payload }
+
     try {
       const { data } = await app.apolloProvider.defaultClient.query({
         query: getIssue,
